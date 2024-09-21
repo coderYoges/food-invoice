@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import "reset-css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./uf-style.css";
+import 'react-responsive-modal/styles.css';
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 

@@ -8,6 +8,7 @@ import { FaRegUser, FaLock } from "react-icons/fa";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setAuth } from "../redux/reducer";
 
 const LoginWrapper = styled.div`
@@ -67,6 +68,7 @@ const SignupSchema = Yup.object().shape({
 });
 
 const LoginPage = ({ setAuth }) => {
+  const navigate = useNavigate();
   return (
     <LoginWrapper>
       <LoginBoxStyled>
@@ -86,6 +88,7 @@ const LoginPage = ({ setAuth }) => {
           onSubmit={async (values, actions) => {
             signInWithEmailAndPassword(auth, values.username, values.password)
               .then((userCreditionals) => setAuth(true))
+              .then(() => navigate("/home", { replace: true }))
               .catch((error) => alert("Incorrect username or password"));
             actions.resetForm();
           }}
