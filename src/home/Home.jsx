@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { MdLogout } from "react-icons/md";
 import { FaHistory } from "react-icons/fa";
 import InvoiceForm from "./InvoiceForm";
 import { PageTitles } from "../config/constants";
+import { db } from "../config/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { setInvoiceHistory, setAuth } from "../redux/reducer";
+import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const HomeWrapper = styled.div`
   display: flex;
@@ -12,6 +17,7 @@ const HomeWrapper = styled.div`
   min-height: 100vh;
   width: 100vw;
   font-family: "Roboto", sans-serif;
+  overflow-x: hidden;
 `;
 
 const HomeTitle = styled.h1`
@@ -21,7 +27,6 @@ const HomeTitle = styled.h1`
   word-spacing: 0.2rem;
   font-weight: 500;
   user-select: none;
-  margin: 0;
 `;
 
 const HomeHeader = styled.div`
@@ -56,17 +61,45 @@ const HistoryIcon = styled(FaHistory)`
   cursor: pointer;
 `;
 
-const HomePage = () => {
+const HomePage = ({ setInvoiceHistory, setAuth }) => {
+  const navigate = useNavigate();
+  const invoiceCollectionRef = collection(db, "invoice-items-list");
+
+  const onLogout = () => {
+    setAuth(false);
+    navigate("/login", { replace: true });
+  };
+
+  const onHistory = () => {
+    navigate("/history", { replace: true });
+  };
+
+  const getInvoices = async () => {
+    const data = await getDocs(invoiceCollectionRef);
+    const invoiceData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    setInvoiceHistory(invoiceData);
+  };
+
+  useEffect(() => {
+    getInvoices();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <HomeWrapper>
       <HomeHeader>
-        <HistoryIcon />
+        <HistoryIcon onClick={onHistory} />
         <HomeTitle>{PageTitles.HOME}</HomeTitle>
-        <LogoutIcon />
+        <LogoutIcon onClick={onLogout} />
       </HomeHeader>
       <InvoiceForm />
     </HomeWrapper>
   );
 };
 
-export default HomePage;
+const mapDispatchToProps = {
+  setInvoiceHistory: setInvoiceHistory,
+  setAuth: setAuth,
+};
+
+export default connect(null, mapDispatchToProps)(HomePage);

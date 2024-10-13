@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
 import { isEmpty } from "lodash";
-import { PageTitles } from "../config/constants";
+import { PageTitles, ButtonLabels } from "../config/constants";
 import { FaRegUser, FaLock } from "react-icons/fa";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setAuth } from "../redux/reducer";
+import { SignupSchema, SignUpInitialValues } from "../config/yup-config";
 
 const LoginWrapper = styled.div`
   display: flex;
@@ -59,14 +59,6 @@ const PasswordIconStyle = styled(FaLock)`
   border-bottom-left-radius: 0.5rem;
 `;
 
-const SignupSchema = Yup.object().shape({
-  username: Yup.string().min(4, "Too Short!").required("Required"),
-  password: Yup.string()
-    .min(4, "Too Short!")
-    .max(12, "Too Long!")
-    .required("Required"),
-});
-
 const LoginPage = ({ setAuth }) => {
   const navigate = useNavigate();
   return (
@@ -83,7 +75,7 @@ const LoginPage = ({ setAuth }) => {
         </div>
 
         <Formik
-          initialValues={{ username: "", password: "" }}
+          initialValues={SignUpInitialValues}
           validationSchema={SignupSchema}
           onSubmit={async (values, actions) => {
             signInWithEmailAndPassword(auth, values.username, values.password)
@@ -128,7 +120,7 @@ const LoginPage = ({ setAuth }) => {
                       role="status"
                     ></div>
                   ) : (
-                    "Login"
+                    <span>{ButtonLabels.LOGIN}</span>
                   )}
                 </button>
               </div>
@@ -140,10 +132,8 @@ const LoginPage = ({ setAuth }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
-
 const mapDispatchToProps = {
   setAuth: setAuth,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(null, mapDispatchToProps)(LoginPage);

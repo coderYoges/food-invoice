@@ -4,6 +4,29 @@ export const PageTitles = {
   CUSTOMER_DETAILS: "Customer Details",
   FUNCTION_DETAILS: "Function Details",
   MENU_DETAILS: "Menu Details",
+  MENU_ITEMS: "Menu Items",
+  INVOICE: "INVOICE",
+  HISTORY: 'HISTORY'
+};
+
+export const ButtonLabels = {
+  RESET: "Reset",
+  SUBMIT: "Submit",
+  LOGIN: "Login",
+};
+
+export const ReviewPageLiterals = {
+  TITLE1: "H.A.",
+  TITLE2: "BRIYANI CATERING",
+  INVOICE_NO: "Invoice No:",
+  INVOICE_DATE: "Invoice Date",
+  FUNCTION_NAME: "Function:",
+  FUNCTION_DATE: "Function Date:",
+  TOTAL_UNITS: "Total Units:",
+  GST_NO:'GST: 33BHFPH0925J1ZM',
+  DESCRIPTION:'DESCRIPTION',
+  UNITS: 'UNITS',
+  AMOUNT: 'AMOUNT'
 };
 
 export const menuCombosList = [
